@@ -198,7 +198,7 @@ a:hover {
   <h1 class="project-name">Kamex</h1>
   <h2 class="project-tagline">High-performance SMS gateway. Fork of Kannel with modern codebase.</h2>
   <a href="https://github.com/vaska94/Kamex" class="btn">View on GitHub</a>
-  <a href="https://github.com/vaska94/Kamex/releases" class="btn">Download</a>
+  <a href="https://github.com/vaska94/Kamex/releases/latest" class="btn">Download</a>
 </header>
 
 <main class="main-content">
@@ -226,6 +226,13 @@ curl -X POST http://localhost:13013/cgi-bin/sendsms \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your-api-token" \
   -d '{"from":"Kamex","to":"+1234","text":"Hello"}'</code></pre>
+
+  <h2>Downloads</h2>
+  <p><strong>RPM packages for EL10</strong> (Rocky Linux 10, RHEL 10) and source RPM available on the <a href="https://github.com/vaska94/Kamex/releases/latest">releases page</a>.</p>
+  <p><strong>Tested on:</strong> Arch Linux, EL10 (Rocky/RHEL)</p>
+
+  <h2>Production Use</h2>
+  <p>Kamex powers <a href="https://sender.ge">SENDER.GE</a> - tested on millions of SMS messages in production.</p>
 
   <h2>About</h2>
   <p>Kamex is a fork of <a href="https://www.kannel.org/">Kannel</a>, the open-source SMS gateway. The codebase has been cleaned up, legacy code removed, and optimized for modern libraries.</p>
