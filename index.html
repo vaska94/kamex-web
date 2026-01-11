@@ -40,7 +40,7 @@ smsbox /etc/kamex/kamex.conf &
 curl -X POST http://localhost:13013/cgi-bin/sendsms \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your-api-token" \
-  -d '{"to":"+1234","text":"Hello"}'</code></pre>
+  -d '{"from":"Kamex","to":"+1234","text":"Hello"}'</code></pre>
 
   <h2>About</h2>
   <p>Kamex is a fork of <a href="https://www.kannel.org/">Kannel</a>, the open-source SMS gateway. The codebase has been cleaned up, legacy code removed, and optimized for modern libraries.</p>
