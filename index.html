@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kamex - SMS Gateway</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="High-performance SMS gateway. Fork of Kannel with modern codebase.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="page-header">
+  <h1 class="project-name">Kamex</h1>
+  <h2 class="project-tagline">High-performance SMS gateway. Fork of Kannel with modern codebase.</h2>
+  <a href="https://github.com/vaska94/Kamex" class="btn">View on GitHub</a>
+  <a href="https://github.com/vaska94/Kamex/releases" class="btn">Download</a>
+</header>
+
+<main class="main-content">
+  <h2>Features</h2>
+  <ul>
+    <li><strong>Protocol Support</strong> - SMPP 3.3/3.4/5.0, HTTP, AT commands for GSM modems</li>
+    <li><strong>Admin Dashboard</strong> - Built-in web UI for monitoring traffic, SMSCs and queues</li>
+    <li><strong>JSON API</strong> - /status.json and /health endpoints for easy integration</li>
+    <li><strong>DLR Storage</strong> - Redis, MySQL, PostgreSQL, SQLite for delivery reports</li>
+    <li><strong>High Performance</strong> - 16,000+ msg/sec with sub-80ms latency</li>
+    <li><strong>Systemd Support</strong> - Native service units for modern Linux</li>
+  </ul>
+
+  <h2>Quick Start</h2>
+<pre><code>git clone https://github.com/vaska94/Kamex.git
+cd Kamex
+
+./configure --enable-ssl --with-redis
+make && sudo make install
+
+bearerbox /etc/kamex/kamex.conf &
+smsbox /etc/kamex/kamex.conf &
+
+curl -X POST http://localhost:13013/cgi-bin/sendsms \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-api-key" \
+  -d '{"to":"+1234","text":"Hello"}'</code></pre>
+
+  <h2>About</h2>
+  <p>Kamex is a fork of <a href="https://www.kannel.org/">Kannel</a>, the open-source SMS gateway. The codebase has been cleaned up, legacy code removed, and optimized for modern libraries.</p>
+
+  <h3>What's been removed</h3>
+  <ul>
+    <li><strong>WAP</strong> - Nobody uses WAP anymore</li>
+    <li><strong>libxml2</strong> - Replaced with lightweight alternatives</li>
+    <li><strong>RADIUS</strong> - Legacy authentication, unused</li>
+    <li><strong>CIMD, OIS, SEMA, EMI/X25</strong> - Dead protocols</li>
+  </ul>
+
+  <footer class="site-footer">
+    <span class="site-footer-owner">Kamex is maintained by <a href="https://github.com/vaska94">vaska94</a>.</span>
+    <span class="site-footer-credits">Fork of Kannel. MIT License.</span>
+  </footer>
+</main>
+
+</body>
+</html>
