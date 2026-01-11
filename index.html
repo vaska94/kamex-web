@@ -39,7 +39,7 @@ smsbox /etc/kamex/kamex.conf &
 
 curl -X POST http://localhost:13013/cgi-bin/sendsms \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer your-api-key" \
+  -H "X-API-Key: your-api-token" \
   -d '{"to":"+1234","text":"Hello"}'</code></pre>
 
   <h2>About</h2>
