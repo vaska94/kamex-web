@@ -73,6 +73,14 @@ a:hover {
   margin-left: 0.5rem;
 }
 
+.badges {
+  margin-top: 1rem;
+}
+
+.badges img {
+  margin: 0 0.25rem;
+}
+
 .main-content {
   max-width: 64rem;
   margin: 0 auto;
@@ -140,6 +148,111 @@ a:hover {
   font-size: inherit;
 }
 
+/* Quickstart tabs */
+.quickstart-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 2px solid #dce6f0;
+}
+
+.quickstart-tab {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  color: #606c71;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.quickstart-tab:hover {
+  color: #0e7442;
+}
+
+.quickstart-tab.active {
+  color: #0e7442;
+  border-bottom-color: #0e7442;
+  font-weight: 600;
+}
+
+.quickstart-content {
+  display: none;
+  padding-top: 1rem;
+}
+
+.quickstart-content.active {
+  display: block;
+}
+
+.quickstart-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.badge-easy {
+  background: #28a745;
+  color: white;
+}
+
+.badge-medium {
+  background: #ffc107;
+  color: #333;
+}
+
+/* Feature grid */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.feature {
+  padding: 1.25rem;
+  border: 1px solid #dce6f0;
+  border-radius: 0.5rem;
+  background: #fafbfc;
+}
+
+.feature h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #0e7442;
+}
+
+.feature p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #606c71;
+}
+
+/* Protocol badges */
+.protocols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.protocol {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
 .site-footer {
   margin-top: 3rem;
   padding-top: 2rem;
@@ -189,6 +302,15 @@ a:hover {
   .btn + .btn {
     margin-left: 0;
   }
+
+  .quickstart-tabs {
+    flex-wrap: wrap;
+  }
+
+  .quickstart-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
 }
   </style>
 </head>
@@ -199,50 +321,200 @@ a:hover {
   <h2 class="project-tagline">High-performance SMS gateway. Fork of Kannel with modern codebase.</h2>
   <a href="https://github.com/vaska94/Kamex" class="btn">View on GitHub</a>
   <a href="https://github.com/vaska94/Kamex/releases/latest" class="btn">Download</a>
+  <a href="https://github.com/vaska94/Kamex/tree/main/doc" class="btn">Documentation</a>
+  <div class="badges">
+    <img src="https://img.shields.io/badge/version-1.7.8-blue.svg" alt="Version">
+    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
+    <img src="https://img.shields.io/badge/docker-ghcr.io-blue.svg" alt="Docker">
+  </div>
 </header>
 
 <main class="main-content">
+
+  <h2>Supported Protocols</h2>
+  <div class="protocols">
+    <span class="protocol">SMPP 3.3/3.4/5.0</span>
+    <span class="protocol">HTTP API</span>
+    <span class="protocol">EMI/UCP</span>
+    <span class="protocol">AT Commands</span>
+  </div>
+
   <h2>Features</h2>
-  <ul>
-    <li><strong>Protocol Support</strong> - SMPP 3.3/3.4/5.0, HTTP, AT commands for GSM modems</li>
-    <li><strong>Admin Dashboard</strong> - Built-in web UI for monitoring traffic, SMSCs and queues</li>
-    <li><strong>JSON API</strong> - <code>/status.json</code> and <code>/health</code> endpoints for easy integration</li>
-    <li><strong>DLR Storage</strong> - Redis, MySQL, PostgreSQL, SQLite for delivery reports</li>
-    <li><strong>High Performance</strong> - 16,000+ msg/sec with sub-80ms latency</li>
-    <li><strong>Systemd Support</strong> - Native service units for modern Linux</li>
-  </ul>
+  <div class="features">
+    <div class="feature">
+      <h3>Admin Dashboard</h3>
+      <p>Built-in web UI for monitoring traffic, SMSCs and message queues in real-time.</p>
+    </div>
+    <div class="feature">
+      <h3>JSON API</h3>
+      <p><code>/status.json</code>, <code>/health</code>, and <code>/api/sendsms</code> endpoints for easy integration.</p>
+    </div>
+    <div class="feature">
+      <h3>DLR Storage</h3>
+      <p>Redis/Valkey, MySQL, PostgreSQL, SQLite backends for delivery reports.</p>
+    </div>
+    <div class="feature">
+      <h3>High Performance</h3>
+      <p>16,000+ msg/sec throughput with sub-80ms latency on commodity hardware.</p>
+    </div>
+    <div class="feature">
+      <h3>Health Checks</h3>
+      <p><code>/health</code> endpoint for load balancers and Kubernetes readiness probes.</p>
+    </div>
+    <div class="feature">
+      <h3>Production Ready</h3>
+      <p>Systemd units, RPM packages, Docker images. Battle-tested since 2000.</p>
+    </div>
+  </div>
 
   <h2>Quick Start</h2>
-<pre><code>git clone https://github.com/vaska94/Kamex.git
-cd Kamex
 
-./configure --enable-ssl --with-redis
-make && sudo make install
+  <div class="quickstart-tabs">
+    <button class="quickstart-tab active" onclick="showTab('docker')">
+      Docker <span class="quickstart-badge badge-easy">Easiest</span>
+    </button>
+    <button class="quickstart-tab" onclick="showTab('rpm')">
+      RPM <span class="quickstart-badge badge-easy">Easy</span>
+    </button>
+    <button class="quickstart-tab" onclick="showTab('source')">
+      Source <span class="quickstart-badge badge-medium">Advanced</span>
+    </button>
+  </div>
+
+  <div id="docker" class="quickstart-content active">
+    <p>No build required. Create two files and run:</p>
+<pre><code>mkdir kamex && cd kamex
+
+# Create docker-compose.yml
+cat &gt; docker-compose.yml &lt;&lt;'EOF'
+services:
+  bearerbox:
+    image: ghcr.io/vaska94/kamex:latest
+    container_name: kamex-bearerbox
+    command: ["/usr/sbin/bearerbox", "/etc/kamex/kamex.conf"]
+    volumes:
+      - ./kamex.conf:/etc/kamex/kamex.conf:ro
+      - kamex-spool:/var/spool/kamex
+      - kamex-logs:/var/log/kamex
+    ports:
+      - "13000:13000"
+    networks:
+      - kamex
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:13000/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+    restart: unless-stopped
+
+  smsbox:
+    image: ghcr.io/vaska94/kamex:latest
+    container_name: kamex-smsbox
+    command: ["/usr/sbin/smsbox", "/etc/kamex/kamex.conf"]
+    volumes:
+      - ./kamex.conf:/etc/kamex/kamex.conf:ro
+      - kamex-logs:/var/log/kamex
+    ports:
+      - "13013:13013"
+    networks:
+      - kamex
+    depends_on:
+      bearerbox:
+        condition: service_healthy
+    restart: unless-stopped
+
+  valkey:
+    image: valkey/valkey:9-alpine
+    container_name: kamex-valkey
+    volumes:
+      - valkey-data:/data
+    networks:
+      - kamex
+    restart: unless-stopped
+
+volumes:
+  kamex-spool:
+  kamex-logs:
+  valkey-data:
+
+networks:
+  kamex:
+    driver: bridge
+EOF
+
+# Download example config
+curl -LO https://raw.githubusercontent.com/vaska94/Kamex/main/doc/examples/kannel.conf
+mv kannel.conf kamex.conf
+# Edit kamex.conf with your SMSC settings
+
+docker compose up -d</code></pre>
+    <p>Admin panel: <code>http://localhost:13000/</code> | HTTP API: <code>http://localhost:13013/</code></p>
+  </div>
+
+  <div id="rpm" class="quickstart-content">
+    <p>For Rocky Linux 10, RHEL 10, AlmaLinux 10:</p>
+<pre><code># Download RPM from releases
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-1.7.8-1.el10.x86_64.rpm
+
+# Install
+sudo dnf install -y ./kamex-*.rpm
+
+# Configure
+sudo cp /usr/share/doc/kamex/examples/kannel.conf /etc/kamex/kamex.conf
+# Edit /etc/kamex/kamex.conf with your SMSC settings
+
+# Start services
+sudo systemctl enable --now kamex-bearerbox kamex-smsbox</code></pre>
+    <p>Admin panel: <code>http://localhost:13000/</code> | HTTP API: <code>http://localhost:13013/</code></p>
+  </div>
+
+  <div id="source" class="quickstart-content">
+    <p>Build from source for custom configurations:</p>
+<pre><code># Install dependencies (RHEL/Rocky)
+sudo dnf install epel-release && sudo crb enable
+sudo dnf install gcc make autoconf automake libtool \
+    openssl-devel mariadb-devel libpq-devel hiredis-devel
+
+# Clone and build
+git clone https://github.com/vaska94/Kamex.git
+cd Kamex
+autoreconf -fi
+./configure --enable-ssl --with-mysql --with-pgsql --with-redis
+make -j$(nproc)
+sudo make install-strip
+
+# Configure and run
+sudo mkdir -p /etc/kamex
+sudo cp doc/examples/kannel.conf /etc/kamex/kamex.conf
+# Edit config with your SMSC settings
 
 bearerbox /etc/kamex/kamex.conf &
-smsbox /etc/kamex/kamex.conf &
+smsbox /etc/kamex/kamex.conf &</code></pre>
+    <p>Admin panel: <code>http://localhost:13000/</code> | HTTP API: <code>http://localhost:13013/</code></p>
+  </div>
 
+  <h2>Send SMS</h2>
+<pre><code># JSON API
 curl -X POST http://localhost:13013/cgi-bin/sendsms \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your-api-token" \
-  -d '{"from":"Kamex","to":"+1234","text":"Hello"}'</code></pre>
+  -d '{"from":"Kamex","to":"+1234567890","text":"Hello"}'
 
-  <h2>Downloads</h2>
-  <p><strong>RPM packages for EL10</strong> (Rocky Linux 10, RHEL 10) and source RPM available on the <a href="https://github.com/vaska94/Kamex/releases/latest">releases page</a>.</p>
-  <p><strong>Tested on:</strong> Arch Linux, EL10 (Rocky/RHEL)</p>
+# Query string (legacy)
+curl "http://localhost:13013/cgi-bin/sendsms?user=test&pass=test&from=Kamex&to=+1234567890&text=Hello"</code></pre>
 
   <h2>Production Use</h2>
   <p>Kamex powers <a href="https://sender.ge">SENDER.GE</a> - tested on millions of SMS messages in production.</p>
 
   <h2>About</h2>
-  <p>Kamex is a fork of <a href="https://www.kannel.org/">Kannel</a>, the open-source SMS gateway. The codebase has been cleaned up, legacy code removed, and optimized for modern libraries.</p>
+  <p>Kamex is a fork of <a href="https://www.kannel.org/">Kannel</a>, the open-source SMS gateway. The codebase has been cleaned up and optimized for modern systems.</p>
 
-  <h3>What's been removed</h3>
+  <h3>Removed Legacy Code</h3>
   <ul>
-    <li><strong>WAP</strong> - Nobody uses WAP anymore</li>
+    <li><strong>WAP</strong> - Obsolete mobile protocol</li>
+    <li><strong>RADIUS</strong> - Legacy authentication</li>
     <li><strong>libxml2</strong> - Replaced with lightweight alternatives</li>
-    <li><strong>RADIUS</strong> - Legacy authentication, unused</li>
-    <li><strong>CIMD, OIS, SEMA, EMI/X25</strong> - Dead protocols</li>
+    <li><strong>Dead protocols</strong> - CIMD, OIS, SEMA, EMI/X.25</li>
   </ul>
 
   <footer class="site-footer">
@@ -250,6 +522,15 @@ curl -X POST http://localhost:13013/cgi-bin/sendsms \
     <span class="site-footer-credits">Fork of Kannel. MIT License.</span>
   </footer>
 </main>
+
+<script>
+function showTab(tab) {
+  document.querySelectorAll('.quickstart-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.quickstart-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`[onclick="showTab('${tab}')"]`).classList.add('active');
+  document.getElementById(tab).classList.add('active');
+}
+</script>
 
 </body>
 </html>
