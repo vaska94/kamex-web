@@ -318,12 +318,12 @@ a:hover {
 
 <header class="page-header">
   <h1 class="project-name">Kamex</h1>
-  <h2 class="project-tagline">High-performance SMS gateway. Fork of Kannel with modern codebase.</h2>
+  <h2 class="project-tagline">High-performance SMS gateway. Enterprise-ready fork of Kannel.</h2>
   <a href="https://github.com/vaska94/Kamex" class="btn">View on GitHub</a>
   <a href="https://github.com/vaska94/Kamex/releases/latest" class="btn">Download</a>
   <a href="https://github.com/vaska94/Kamex/tree/main/doc" class="btn">Documentation</a>
   <div class="badges">
-    <img src="https://img.shields.io/badge/version-1.7.8-blue.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-1.8.1-blue.svg" alt="Version">
     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
     <img src="https://img.shields.io/badge/docker-ghcr.io-blue.svg" alt="Docker">
   </div>
@@ -363,7 +363,31 @@ a:hover {
     </div>
     <div class="feature">
       <h3>Production Ready</h3>
-      <p>Systemd units, RPM packages, Docker images. Battle-tested since 2000.</p>
+      <p>Systemd units, RPM packages, Docker images, reproducible builds.</p>
+    </div>
+    <div class="feature">
+      <h3>Prometheus Metrics</h3>
+      <p><code>/metrics</code> endpoint for Grafana dashboards. SMS rates, queue depths, SMSC status.</p>
+    </div>
+    <div class="feature">
+      <h3>JSON Structured Logs</h3>
+      <p><code>log-format = json</code> for ELK, Loki, Splunk integration.</p>
+    </div>
+    <div class="feature">
+      <h3>Config Hot-Reload</h3>
+      <p><code>SIGHUP</code> reloads config, adds/removes SMSCs without restart.</p>
+    </div>
+    <div class="feature">
+      <h3>Environment Variables</h3>
+      <p><code>${VAR}</code> syntax in config for Docker/K8s secrets injection.</p>
+    </div>
+    <div class="feature">
+      <h3>Async Logging</h3>
+      <p>Non-blocking logging with dedicated writer thread. Zero I/O blocking.</p>
+    </div>
+    <div class="feature">
+      <h3>Enterprise Ready</h3>
+      <p>SBOM, reproducible builds, config validation, structured logs. Compliance-friendly.</p>
     </div>
   </div>
 
@@ -453,11 +477,17 @@ docker compose up -d</code></pre>
 
   <div id="rpm" class="quickstart-content">
     <p>For Rocky Linux 10, RHEL 10, AlmaLinux 10:</p>
-<pre><code># Download RPM from releases
-curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-1.7.8-1.el10.x86_64.rpm
+<pre><code># Download RPMs from releases
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-1.8.1-1.el10.x86_64.rpm
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-sqlbox-1.8.1-1.el10.x86_64.rpm
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-opensmppbox-1.8.1-1.el10.x86_64.rpm
 
-# Install
-sudo dnf install -y ./kamex-*.rpm
+# Install core (required)
+sudo dnf install -y ./kamex-1.8.1-*.rpm
+
+# Install optional modules
+sudo dnf install -y ./kamex-sqlbox-*.rpm      # Database queue storage
+sudo dnf install -y ./kamex-opensmppbox-*.rpm # SMPP proxy/load balancer
 
 # Configure
 sudo cp /usr/share/doc/kamex/examples/kannel.conf /etc/kamex/kamex.conf
