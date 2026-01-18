@@ -206,6 +206,48 @@ a:hover {
   color: #333;
 }
 
+/* Image toggle */
+.image-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.image-toggle-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #dce6f0;
+  border-radius: 0.3rem;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #606c71;
+  transition: all 0.2s;
+}
+
+.image-toggle-btn:hover {
+  border-color: #0e7442;
+  color: #0e7442;
+}
+
+.image-toggle-btn.active {
+  background: #0e7442;
+  border-color: #0e7442;
+  color: #fff;
+}
+
+.image-toggle-btn .size {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.docker-variant {
+  display: none;
+}
+
+.docker-variant.active {
+  display: block;
+}
+
 /* Feature grid */
 .features {
   display: grid;
@@ -408,7 +450,13 @@ a:hover {
   </div>
 
   <div id="docker" class="quickstart-content active">
-    <p>No build required. Create two files and run:</p>
+    <div class="image-toggle">
+      <button class="image-toggle-btn active" onclick="showDockerVariant('ubi')">UBI 10 <span class="size">(~150MB)</span></button>
+      <button class="image-toggle-btn" onclick="showDockerVariant('alpine')">Alpine <span class="size">(~20MB)</span></button>
+    </div>
+
+    <div id="docker-ubi" class="docker-variant active">
+    <p>Enterprise image based on Red Hat UBI 10:</p>
 <pre><code>mkdir kamex && cd kamex
 
 # Create docker-compose.yml
@@ -474,6 +522,77 @@ mv kannel.conf kamex.conf
 # Edit kamex.conf with your SMSC settings
 
 docker compose up -d</code></pre>
+    </div>
+
+    <div id="docker-alpine" class="docker-variant">
+    <p>Lightweight image based on Alpine Linux (~20MB):</p>
+<pre><code>mkdir kamex && cd kamex
+
+# Create docker-compose.yml
+cat &gt; docker-compose.yml &lt;&lt;'EOF'
+services:
+  bearerbox:
+    image: ghcr.io/vaska94/kamex:alpine
+    container_name: kamex-bearerbox
+    command: ["/usr/sbin/bearerbox", "/etc/kamex/kamex.conf"]
+    volumes:
+      - ./kamex.conf:/etc/kamex/kamex.conf:ro
+      - kamex-spool:/var/spool/kamex
+      - kamex-logs:/var/log/kamex
+    ports:
+      - "13000:13000"
+    networks:
+      - kamex
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:13000/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+    restart: unless-stopped
+
+  smsbox:
+    image: ghcr.io/vaska94/kamex:alpine
+    container_name: kamex-smsbox
+    command: ["/usr/sbin/smsbox", "/etc/kamex/kamex.conf"]
+    volumes:
+      - ./kamex.conf:/etc/kamex/kamex.conf:ro
+      - kamex-logs:/var/log/kamex
+    ports:
+      - "13013:13013"
+    networks:
+      - kamex
+    depends_on:
+      bearerbox:
+        condition: service_healthy
+    restart: unless-stopped
+
+  valkey:
+    image: valkey/valkey:9-alpine
+    container_name: kamex-valkey
+    volumes:
+      - valkey-data:/data
+    networks:
+      - kamex
+    restart: unless-stopped
+
+volumes:
+  kamex-spool:
+  kamex-logs:
+  valkey-data:
+
+networks:
+  kamex:
+    driver: bridge
+EOF
+
+# Download example config
+curl -LO https://raw.githubusercontent.com/vaska94/Kamex/main/doc/examples/kannel.conf
+mv kannel.conf kamex.conf
+# Edit kamex.conf with your SMSC settings
+
+docker compose up -d</code></pre>
+    </div>
+
     <p>Admin panel: <code>http://localhost:13000/</code> | HTTP API: <code>http://localhost:13013/</code></p>
   </div>
 
@@ -561,6 +680,13 @@ function showTab(tab) {
   document.querySelectorAll('.quickstart-content').forEach(c => c.classList.remove('active'));
   document.querySelector(`[onclick="showTab('${tab}')"]`).classList.add('active');
   document.getElementById(tab).classList.add('active');
+}
+
+function showDockerVariant(variant) {
+  document.querySelectorAll('.image-toggle-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.docker-variant').forEach(v => v.classList.remove('active'));
+  document.querySelector(`[onclick="showDockerVariant('${variant}')"]`).classList.add('active');
+  document.getElementById('docker-' + variant).classList.add('active');
 }
 </script>
 
