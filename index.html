@@ -367,7 +367,7 @@ a:hover {
   <a href="https://github.com/vaska94/Kamex/blob/main/doc/openapi.yaml" class="btn">OpenAPI</a>
   <a href="https://github.com/vaska94/Kamex/blob/main/CHANGELOG.md" class="btn">Changelog</a>
   <div class="badges">
-    <img src="https://img.shields.io/badge/version-1.8.3-blue.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-1.8.11-blue.svg" alt="Version">
     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
     <img src="https://img.shields.io/badge/docker-ghcr.io-blue.svg" alt="Docker">
   </div>
@@ -424,6 +424,21 @@ a:hover {
     <div class="feature">
       <h3>Environment Variables</h3>
       <p><code>${VAR}</code> syntax in config for Docker/K8s secrets injection.</p>
+    </div>
+    <div class="feature">
+      <h3>IPv6</h3>
+      <p>Opt-in dual-stack listeners and AAAA resolution. Off by default, so
+      existing IPv4 deployments are untouched until you enable it.</p>
+    </div>
+    <div class="feature">
+      <h3>Verified TLS</h3>
+      <p>SNI on outbound connections, plus optional certificate hostname
+      verification for SMPP over TLS and <code>dlr-url</code> callbacks.</p>
+    </div>
+    <div class="feature">
+      <h3>Directional Rate Limits</h3>
+      <p><code>throughput-mt</code> and <code>throughput-mo</code> cap submissions
+      and inbound traffic per SMSC independently.</p>
     </div>
     <div class="feature">
       <h3>Async Logging</h3>
@@ -598,13 +613,17 @@ docker compose up -d</code></pre>
 
   <div id="rpm" class="quickstart-content">
     <p>For Rocky Linux 10, RHEL 10, AlmaLinux 10:</p>
-<pre><code># Download RPMs from releases
-curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-1.8.3-1.el10.x86_64.rpm
-curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-sqlbox-1.8.3-1.el10.x86_64.rpm
-curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-opensmppbox-1.8.3-1.el10.x86_64.rpm
+<pre><code># Resolve the current release, so this stays correct after every update
+VER=$(curl -s https://api.github.com/repos/vaska94/Kamex/releases/latest \
+      | sed -n 's/.*"tag_name": *"v\([^"]*\)".*/\1/p')
+
+# Download RPMs from releases
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-${VER}-1.el10.x86_64.rpm
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-sqlbox-${VER}-1.el10.x86_64.rpm
+curl -LO https://github.com/vaska94/Kamex/releases/latest/download/kamex-opensmppbox-${VER}-1.el10.x86_64.rpm
 
 # Install core (required)
-sudo dnf install -y ./kamex-1.8.3-*.rpm
+sudo dnf install -y ./kamex-${VER}-*.rpm
 
 # Install optional modules
 sudo dnf install -y ./kamex-sqlbox-*.rpm      # Database queue storage
